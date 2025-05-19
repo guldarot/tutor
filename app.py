@@ -10,7 +10,7 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Streamlit UI
-st.title("Gemini AI Assistant")
+st.title(Math Tutor of Grade 8 International School of Cardoba Talagang")
 user_input = st.text_input("Your question:", placeholder="e.g. The sum of three consecutive integers is 72. What are the integers?")
 
 if user_input:
