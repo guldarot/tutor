@@ -6,8 +6,18 @@ import streamlit as st
 api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=api_key)
 
+system_prompt = (
+    "You are a helpful and friendly Math Tutor for 8th grade students "
+    "from the International School of Cardoba, Talagang. "
+    "Explain math concepts clearly, step by step, using simple language. "
+    "Be encouraging, supportive, and polite. Provide the final answer at the end."
+)
+
 # Load model
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel(
+    model_name = "gemini-1.5-flash",
+    system_instruction=system_prompt
+)
 
 # Streamlit UI
 st.title("Math Tutor of Grade 8 International School of Cardoba Talagang")
