@@ -23,6 +23,7 @@ model = genai.GenerativeModel(
 # Initialize chat session with memory
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat(history=[])
+    st.session_state.messages.append({"role": "assistant", "content": "How can I help you today?"})
 
 # Streamlit UI
 st.title("📘 Grade 8 Math Tutor - International School of Cardoba, Talagang")
