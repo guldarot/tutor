@@ -34,12 +34,12 @@ if user_input.strip():
     with st.spinner("Thinking... 🤔"):
         try:
             response = st.session_state.chat.send_message(user_input)
-            st.session_state.chat.history.append({"role": "user", "parts": [user_input]})
-            st.session_state.chat.history.append({"role": "model", "parts": [response.text]})
+            st.success("✅ Answer:")
+            st.markdown(response.text)
         except Exception as e:
             st.error(f"❌ Error: {e}")
 
-# Display the conversation history
+# Show conversation history
 if st.session_state.chat.history:
     st.markdown("### 🧠 Conversation History")
     for msg in st.session_state.chat.history:
