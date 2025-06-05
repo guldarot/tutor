@@ -20,15 +20,29 @@ model = genai.GenerativeModel(
     system_instruction=system_prompt
 )
 
-# Streamlit UI
-st.title("Math Tutor of Grade 8 International School of Cardoba Talagang")
-user_input = st.text_input("Your question:", placeholder="e.g. The sum of three consecutive integers is 72. What are the integers?")
+# Initialize chat session with memory
+if "chat" not in st.session_state:
+    st.session_state.chat = model.start_chat(history=[])
 
-if user_input:
-    with st.spinner("Thinking..."):
+# Streamlit UI
+st.title("📘 Grade 8 Math Tutor - International School of Cardoba, Talagang")
+st.markdown("Ask any **math question** below and get a clear, step-by-step explanation:")
+
+user_input = st.text_area("Your question:", placeholder="e.g. The sum of three consecutive integers is 72. What are the integers?")
+
+if user_input.strip():
+    with st.spinner("Thinking... 🤔"):
         try:
-            response = model.generate_content(user_input)
-            st.success("Expert says:")
-            st.markdown(response.text)
+            response = st.session_state.chat.send_message(user_input)
+            st.session_state.chat.history.append({"role": "user", "parts": [user_input]})
+            st.session_state.chat.history.append({"role": "model", "parts": [response.text]})
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f"❌ Error: {e}")
+
+# Display the conversation history
+if st.session_state.chat.history:
+    st.markdown("### 🧠 Conversation History")
+    for i, msg in enumerate(st.session_state.chat.history):
+        role = "👩‍🏫 Math Tutor" if msg["role"] == "model" else "🧑 Student"
+        content = msg["parts"][0]
+        st.markdown(f"**{role}:** {content}")
