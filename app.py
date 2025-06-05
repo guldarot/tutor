@@ -23,28 +23,33 @@ model = genai.GenerativeModel(
 # Initialize chat session with memory
 if "chat" not in st.session_state:
     st.session_state.chat = model.start_chat(history=[])
+    st.session_state.messages = []
     st.session_state.messages.append({"role": "assistant", "content": "How can I help you today?"})
 
 # Streamlit UI
-st.title("📘 Grade 8 Math Tutor - International School of Cardoba, Talagang")
+st.title("📘 Grade 8 Math Tutor")
+st.markdown("**International School of Cardoba, Talagang**")
 st.markdown("Ask any **math question** below and get a clear, step-by-step explanation:")
 
+# Input box
 user_input = st.text_area("Your question:", placeholder="e.g. The sum of three consecutive integers is 72. What are the integers?")
 
+# Process user input
 if user_input.strip():
     with st.spinner("Thinking... 🤔"):
         try:
+            # Send message to model
             response = st.session_state.chat.send_message(user_input)
+            st.session_state.messages.append({"role": "user", "content": user_input})
+            st.session_state.messages.append({"role": "assistant", "content": response.text})
             st.success("✅ Answer:")
             st.markdown(response.text)
         except Exception as e:
             st.error(f"❌ Error: {e}")
 
 # Show conversation history
-if st.session_state.chat.history:
+if st.session_state.messages:
     st.markdown("### 🧠 Conversation History")
-    for msg in st.session_state.chat.history:
-        role = "👩‍🏫 Math Tutor" if msg.role == "model" else "🧑 Student"
-        part = msg.parts[0]
-        content = part.text if hasattr(part, "text") else str(part)
-        st.markdown(f"**{role}:** {content}")
+    for msg in st.session_state.messages:
+        role_icon = "👩‍🏫 Math Tutor" if msg["role"] == "assistant" else "🧑 Student"
+        st.markdown(f"**{role_icon}:** {msg['content']}")
