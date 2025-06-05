@@ -42,7 +42,8 @@ if user_input.strip():
 # Display the conversation history
 if st.session_state.chat.history:
     st.markdown("### 🧠 Conversation History")
-    for i, msg in enumerate(st.session_state.chat.history):
-        role = "👩‍🏫 Math Tutor" if msg["role"] == "model" else "🧑 Student"
-        content = msg["parts"][0]
+    for msg in st.session_state.chat.history:
+        role = "👩‍🏫 Math Tutor" if msg.role == "model" else "🧑 Student"
+        part = msg.parts[0]
+        content = part.text if hasattr(part, "text") else str(part)
         st.markdown(f"**{role}:** {content}")
