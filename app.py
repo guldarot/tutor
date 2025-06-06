@@ -27,7 +27,7 @@ if "chat" not in st.session_state:
     st.session_state.messages.append({"role": "assistant", "content": "How can I help you today?"})
 
 # Streamlit UI
-st.title("📘 Grade 8 Math Tutor")
+st.title("📘 Grade 8 Math Tutor - International School of Cardoba Talagang")
 st.markdown("**International School of Cardoba, Talagang**")
 st.markdown("Ask any **math question** below and get a clear, step-by-step explanation:")
 
